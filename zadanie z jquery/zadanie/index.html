@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Losowe zdjęcia psów</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <script>
+        $(document).ready(function()
+        // Ta funkcja wykonuje kod, gdy cały dokument HTML jest już załadowany
+        {
+            Rasy();
+            $("#button").click(function()
+            // Pobieranie wartości aktualnie wybranej opcji z rozwijanej listy ras i przypisuje ją do zmiennej selectedRasa
+            {
+                let selectedRasa = $("#selRasa").val();
+                LosoweZdjecie(selectedRasa);
+            });
+        });
+
+        function Rasy()
+        // Ta funkcja pobiera listę ras psów z API
+        {
+            let URL = "https://dog.ceo/api/breeds/list/all";
+            $.get(URL, function(data)
+            {
+                let rasy = data.message;
+                let options = "";
+                for (let rasa in rasy)
+                {
+                    options += `<option value="${rasa}">${rasa}</option>`;
+                }
+                $("#selRasa").html(options);
+            });
+        }
+
+        function LosoweZdjecie(rasa)
+        // Ta funkcja pobiera losowe zdjęcie psa dla określonej rasy
+        {
+            let URL = `https://dog.ceo/api/breed/${rasa}/images/random`;
+            $.get(URL, function(data) 
+            {
+                let URLZdjecia = data.message;
+                Zdjecie(URLZdjecia);
+            });
+        }
+    
+        function Zdjecie(URLZdjecia)
+        // Ta funkcja wyświetla zdjęcie psa na stronie
+        {
+            let zdjecie = `<img src="${URLZdjecia}" alt="Losowe zdjęcie psa" class="img-fluid">`;
+            $("#foto").html(zdjecie);
+        }
+    </script>
+    <div class="container mt-5 bg-secondary pt-3 pb-3">
+        <h1 class="text-center">Zdjęcia psów</h1>
+        <div class="form-group">
+            <label class="pb-1" for="rasy">Wybierz rasę:</label>
+            <select class="form-control" id="selRasa">
+                <!-- Opcje z rasami zostaną dodane tutaj przez JavaScript -->
+            </select>
+        </div>
+        <br/>
+        <button class="btn btn-secondary" id="button">Pokaż losowe zdjęcie</button>
+        <div id="foto" class="mt-4">
+            <!-- Zdjęcie psa zostanie wyświetlone tutaj -->
+        </div>
+    </div>
+</body>
+</html>

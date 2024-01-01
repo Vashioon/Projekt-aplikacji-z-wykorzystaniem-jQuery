@@ -1,0 +1,75 @@
+#name
+{
+    text-align: center;
+    background-color: darkgray;
+    height: 100px;
+    padding-top: 15px;
+}
+#header
+{
+    background-color: lightgray;
+    clear: both;
+    text-align: center;
+    height: 100px;
+    padding-top: 3px;
+}
+#slowodiv
+{
+    float: left;
+    background-color: lightgray;
+    width: 80%;
+    height: 150px;
+}
+#zycia
+{
+    float: left;
+    background-color: lightgray;
+    width: 20%;
+    height: 150px;
+    text-align: center;
+}
+#formularze
+{
+    float: left;
+    background-color: darkgray;
+    width: 33.333%;
+    height: 700px;
+}
+#consola
+{
+    float: left;
+    background-color: darkgray;
+    width: 33.333%;
+    height: 700px;
+}
+#slownik
+{
+    float: left;
+    background-color: darkgray;
+    width: 33.333%;
+    height: 700px;
+    text-align: center;
+}
+
+img
+{
+    width: 50px;
+    height: 50px;
+}
+#myCanvas
+{
+    background-image: url(serce.png);
+}
+#haslo
+{
+    font-size: 50px;   
+}
+.slownikzeslowami
+{
+    width: 150px;
+    height: 25px;
+}
+li
+{
+    text-align: left;
+}

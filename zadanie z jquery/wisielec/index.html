@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisielec</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        var slowoDoOdgadniecia;
+        var odgadnieteLitery = [];
+        var maxProb = 3;
+        var slowa = [];
+        var licznikProb = 0;
+        var iloscSlow=1;
+        function zycia()
+        {
+            if(licznikProb==1)
+            {
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.beginPath();
+                ctx.moveTo(210, 0);
+                ctx.lineTo(308, 88);
+                ctx.moveTo(308, 0);
+                ctx.lineTo(210, 88);
+                ctx.stroke();
+            }
+            else if(licznikProb==2)
+            {
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.beginPath();
+                ctx.moveTo(105, 0);
+                ctx.lineTo(203, 88);
+                ctx.moveTo(203, 0);
+                ctx.lineTo(105, 88);
+                ctx.stroke();
+            }
+            else if(licznikProb==3)
+            {
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(98, 88);
+                ctx.moveTo(98, 0);
+                ctx.lineTo(0, 88);
+                ctx.stroke();
+                document.getElementById("info").innerHTML+="Podano literę: "+litera+" - jest to nieprawidłowa litera!<br>KONIEC GRY!!!";
+                document.getElementById("status").innerHTML="Koniec gry! Słowo to: " + slowoDoOdgadniecia;
+            }
+        };
+
+        function dodajSlowo()
+        {
+            var wyraz=document.getElementById("slowo").value;
+            var Dwyraz=wyraz.toUpperCase();
+            slowa.push(Dwyraz);
+            document.getElementById("info").innerHTML="Dodano słowo: "+slowa[iloscSlow-1]+"<br>Ilość słów dodanych do słownika to: "+iloscSlow+"<br>";
+            iloscSlow++;
+        };
+
+        function losujSlowo()
+        {
+            odgadnieteLitery = [];
+            var losowyIndex = Math.floor(Math.random() * slowa.length);
+            slowoDoOdgadniecia=slowa[losowyIndex];
+        };
+
+
+        function pokazSlowa() 
+        {
+            document.getElementById("listaslow").innerHTML = "";
+            for (var i = 0; i < iloscSlow-1; i++) 
+            {
+                document.getElementById("listaslow").innerHTML += "<li>"+slowa[i]+"</li>";
+            }
+        };
+
+        function ukryjSlowa()
+        {
+            document.getElementById("listaslow").innerHTML = "";
+        };
+
+
+
+        function Start() 
+        {
+            if(iloscSlow==1)
+            {
+                document.getElementById("info").innerHTML="Najpierw dodaj słowa do słownika!!!";
+            }
+            else
+            {
+                licznikProb = 0;
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.getElementById("status").innerHTML="";
+                losujSlowo();
+                for (var i = 0; i < slowoDoOdgadniecia.length; i++) 
+                {
+                    odgadnieteLitery[i] = "_";
+                }
+                document.getElementById("info").innerHTML="Wylosowano słowo<br>";
+                stanGry();
+            }
+        };
+
+        function stanGry()
+        {
+            document.getElementById("haslo").innerHTML="&nbspSłowo: " + odgadnieteLitery.join(" ");
+        };
+
+        function sprawdzLitere(litera) 
+        {
+            var literaZnaleziona = false;
+            for (var i = 0; i < slowoDoOdgadniecia.length; i++) 
+            {
+                if (slowoDoOdgadniecia[i] === litera) 
+                {
+                    odgadnieteLitery[i] = litera;
+                    literaZnaleziona = true;
+                }
+            }
+            return literaZnaleziona;
+        };
+
+        function pobierzLitere()
+        {
+            litera=document.getElementById("litera").value.toUpperCase();
+            kolejnaRunda(litera);
+        };
+
+        function kolejnaRunda(litera) 
+        {
+            if (licznikProb <= maxProb-1) 
+            {
+                var literaZnaleziona = sprawdzLitere(litera);
+
+                if (!literaZnaleziona) 
+                {
+                    licznikProb++;
+                    zycia();
+                    if(licznikProb!=3)
+                    {
+                        document.getElementById("info").innerHTML+="Podano literę: "+litera+" - jest to nieprawidłowa litera!<br>";
+                    }
+                }
+                else
+                {
+                    document.getElementById("info").innerHTML+="Podano literę: "+litera+" - jest to prawidłowa litera!<br>";
+                }
+                stanGry();
+                if (odgadnieteLitery.indexOf("_") === -1) 
+                {
+                    document.getElementById("status").innerHTML="Gratulacje!";
+                    document.getElementById("info").innerHTML+="KONIEC GRY!!!<br>";
+                } 
+                else 
+                {
+                    if(licznikProb!=3)
+                    {
+                        document.getElementById("info").innerHTML+="Podaj kolejną literę:<br>";
+                    }
+                }
+            } 
+            else 
+            {
+                licznikProb++;
+                zycia();
+                document.getElementById("info").innerHTML+="Podano literę: "+litera+" - jest to nieprawidłowa litera!<br>";
+                document.getElementById("status").innerHTML="Koniec gry! Słowo to: " + slowoDoOdgadniecia;
+                
+            }
+        };
+
+    </script>
+    <div id="name">
+        <h1>WISIELEC</h1>
+    </div>
+    <div id="header">
+        <h2 id="status"></h2>
+        <button type="button" onclick="Start()">Nowa Gra</button>
+    </div>
+    <div id="gradiv">
+        <div id="slowodiv">
+            <h3 id="haslo"></h3>
+        </div>
+        <div id="zycia">
+            <canvas id="myCanvas" width="308" height="88"></canvas>
+        </div>
+    </div>
+    <div id="main">
+        <div id="formularze">
+            <br>
+            <form id="formularz">
+                <label for="litera">&nbsp;&nbsp;Podaj literę: </label>
+                <input type="text" id="litera" maxlength="1" required>
+                <button type="button" onclick="pobierzLitere()">Sprawdź</button>
+            </form>
+            <br>
+            <form id="formularz2">
+                <label for="slowa">&nbsp;&nbsp;Dodaj słowo: </label>
+                <input type="text" id="slowo" required>
+                <button type="button" onclick="dodajSlowo()">Dodaj</button>
+            </form>
+        </div>
+        <div id="consola">
+            <p id="info"></p>
+        </div>
+        <div id="slownik">
+            <br>
+            <button type="button" onclick="pokazSlowa()" class="slownikzeslowami">Pokaż słownik</button>
+            <button type="button" onclick="ukryjSlowa()" class="slownikzeslowami">Ukryj słownik</button>
+            <ol id="listaslow"></ol>
+        </div>
+    </div>
+</body>
+</html>
